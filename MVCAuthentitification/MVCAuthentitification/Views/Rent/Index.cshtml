@@ -1,0 +1,176 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+
+@model IEnumerable<MVCAuthentitification.Models.RentailViewModel>
+
+<div class="row">
+
+    <div class="col-sm-4">
+       
+
+
+        @using (Html.BeginForm("Save", "rent", FormMethod.Post, new { id = "popupForm" }))
+        {<div>
+                <h1>Izdavanje konzole</h1>
+            </div>
+
+
+            <div>
+
+                <div class="form-group">
+                    <label class="form-label">Konzola</label>
+                    <select class="form-control" id="modelKonzole" name="modelKonzole" placeholder="Model Konzole" required>
+                        <option>Please select</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Igrica</label>
+                    <select class="form-control" id="nazivIgrice" name="nazivIgrice" placeholder="Naziv Igrice" required>
+                        <option>Please select</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="form-label">Datum od:</label>
+                    <input type="date" id="datumod" name="datumod" class="form-control" placeholder="" />
+
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Datum do:</label>
+                    <input type="date" id="datumdo" name="datumdo" class="form-control" placeholder="" />
+
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Iznos za placanje:</label>
+                    <input type="text" id="cena" name="cena" class="form-control" placeholder="Unesi iznos" />
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <input type="submit" value="Izdaj racun" class="btn btn-success" />
+
+                </div>
+
+
+
+            </div>
+
+        }
+
+
+    </div>
+
+    <div class="col-sm-8">
+
+        <table class="table">
+            <tr> </tr>
+            <tr>
+                <th>IZDATI RACUNI</th>
+            </tr>
+
+            <tr>
+                <th>Model konzole</th>
+                <th>Igrica </th>
+                <th>Datum pocetka izdavanja</th>
+                <th>Datum zavrsetka izdavanja</th>
+                <th>Iznos za placanje</th>
+            </tr>
+
+            @foreach(var item in Model)
+            {
+        <tr>
+            <td>@item.modelKonzole</td>
+            <td>@item.nazivIgrice</td>
+            <td>@item.datumod</td>
+            <td>@item.datumdo</td>
+            <td>@item.cena</td>
+        </tr>
+            }
+
+
+        </table>
+
+
+
+    </div>
+
+
+    </div>
+
+    @section scripts
+{
+
+
+        <script src="~/Scripts/jquery-3.4.1.js"></script>
+        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+        <script src="~/Scripts/jquery.validate.js"></script>
+
+        <script>
+
+            getKonzola();
+
+            function getKonzola() {
+                $.ajax({
+
+                    type: 'GET',
+                    url: 'rent/Getkonzola',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        console.log(data);
+
+                        for (var i = 0; i < data.length; i++) {
+
+                            $("#modelKonzole").append($("<option/> ", {
+                                text: data[i].model
+                            }));
+
+                        }
+                    }
+                });
+            }
+
+
+
+            getIgrica();
+
+            function getIgrica() {
+                $.ajax({
+
+                    type: 'GET',
+                    url: 'rent/Getigrica',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        console.log(data);
+
+                        for (var u = 0; u < data.length; u++) {
+
+                            $("#nazivIgrice").append($("<option/> ", {
+                                text: data[u].naziv
+                            }));
+
+                        }
+                    }
+
+                });
+            }
+
+
+
+
+
+        </script>
+
+
+
+
+
+
+    }
